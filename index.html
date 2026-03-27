@@ -7,18 +7,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg:       #0f0f0f;
-      --surface:  #1a1a1a;
-      --border:   #2a2a2a;
-      --text:     #e8e6de;
-      --muted:    #888780;
-      --purple:   #7F77DD;
-      --teal:     #1D9E75;
-      --amber:    #EF9F27;
-      --coral:    #D85A30;
-      --blue:     #378ADD;
-      --green:    #639922;
-      --radius:   10px;
+      --bg:      #0f0f0f;
+      --surface: #1a1a1a;
+      --border:  #2a2a2a;
+      --text:    #e8e6de;
+      --muted:   #888780;
+      --purple:  #7F77DD;
+      --teal:    #1D9E75;
+      --amber:   #EF9F27;
+      --coral:   #D85A30;
+      --blue:    #378ADD;
+      --green:   #639922;
+      --radius:  10px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -28,11 +28,8 @@
       font-size: 15px;
       line-height: 1.6;
     }
-
-    /* ── Layout ── */
     .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
-    /* ── Header ── */
     header { margin-bottom: 2.5rem; }
     .badge {
       display: inline-block;
@@ -53,7 +50,6 @@
       color: var(--muted);
     }
 
-    /* ── Loading / Error ── */
     #loading, #error {
       text-align: center; padding: 4rem 2rem;
       color: var(--muted); font-size: 14px;
@@ -66,10 +62,8 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Dashboard (hidden until loaded) ── */
     #dashboard { display: none; }
 
-    /* ── Metric cards ── */
     .metrics {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,21 +80,17 @@
     .metric-sub   { font-size: 12px; color: var(--muted); margin-top: 4px; }
     .metric-bar   { height: 3px; border-radius: 2px; margin-top: 12px; opacity: .7; }
 
-    /* ── Grid 2 colunas ── */
     .grid2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 16px; margin-bottom: 16px;
     }
-
-    /* ── Card ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.5rem;
     }
-    .card.full { grid-column: 1 / -1; }
     .card-title {
       font-size: 13px; font-weight: 600; color: var(--text);
       text-transform: uppercase; letter-spacing: .06em;
@@ -113,7 +103,6 @@
       line-height: 1.5;
     }
 
-    /* ── Horizontal bars ── */
     .hbar { margin-bottom: 10px; }
     .hbar-header {
       display: flex; justify-content: space-between;
@@ -129,9 +118,9 @@
       padding-left: 8px;
       font-size: 11px; font-weight: 600; color: #fff;
       transition: width .8s ease;
+      min-width: 2px;
     }
 
-    /* ── Bandeira visual ── */
     .flag-track {
       display: flex; height: 36px; border-radius: 6px;
       overflow: hidden; margin-bottom: 12px;
@@ -139,10 +128,8 @@
     .flag-seg {
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 700;
-      transition: width .8s ease;
     }
 
-    /* ── Oportunidades ── */
     .opp-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -162,7 +149,6 @@
       padding: 2px 10px; border-radius: 20px;
     }
 
-    /* ── Footer ── */
     footer {
       margin-top: 3rem;
       padding-top: 1.5rem;
@@ -173,7 +159,6 @@
     footer a { color: var(--purple); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
       header h1 { font-size: 22px; }
       .metric-value { font-size: 26px; }
@@ -194,113 +179,103 @@
     <div class="spinner"></div>
     Carregando dados da frota...
   </div>
-
   <div id="error">
     Não foi possível carregar os dados. Tente novamente mais tarde.
   </div>
 
   <div id="dashboard">
 
-    <!-- Métricas principais -->
     <div class="metrics" id="metrics-row"></div>
 
     <div class="grid2">
-
-      <!-- Bandeira -->
       <div class="card">
         <div class="card-title">Bandeira da frota</div>
         <div class="card-insight" id="bandeira-insight"></div>
         <div class="flag-track" id="flag-track"></div>
         <div style="display:flex;gap:16px;font-size:12px;color:var(--muted)" id="flag-legend"></div>
       </div>
-
-      <!-- Donut -->
       <div class="card">
         <div class="card-title">Distribuição por tipo</div>
-        <div class="card-insight">PSVs lideram com folga — 42% da frota total.</div>
+        <div class="card-insight" id="donut-insight"></div>
         <div style="position:relative;height:200px">
           <canvas id="donutChart"></canvas>
         </div>
       </div>
-
     </div>
 
-    <!-- Barras horizontais — tipos -->
     <div class="card" style="margin-bottom:16px">
       <div class="card-title">Ranking por tipo de embarcação</div>
       <div class="card-insight" id="tipos-insight"></div>
       <div id="hbars-tipos"></div>
     </div>
 
-    <!-- Top empresas -->
     <div class="card" style="margin-bottom:16px">
       <div class="card-title">Top 10 operadoras</div>
-      <div class="card-insight">Bram Offshore lidera com folga — 16% de toda a frota nacional.</div>
+      <div class="card-insight" id="empresas-insight"></div>
       <div id="hbars-empresas"></div>
     </div>
 
-    <!-- Oportunidades -->
     <div class="card" style="margin-bottom:16px">
       <div class="card-title">Radar de oportunidades</div>
       <div class="card-insight">Saturado vs nicho — onde está o dinheiro de verdade.</div>
       <div class="opp-grid" id="opp-grid"></div>
     </div>
 
-  </div><!-- /dashboard -->
+  </div>
 
   <footer>
     <span>Fonte: <a href="https://abeam.org.br/estudo-da-frota/" target="_blank">ABEAM — Estudo da Frota</a> · Syndarma · ANTAQ · DPC</span>
     <span id="footer-updated"></span>
   </footer>
 
-</div><!-- /page -->
+</div>
 
 <script>
 const COLORS = {
   purple: '#7F77DD', teal: '#1D9E75', amber: '#EF9F27',
   coral:  '#D85A30', blue: '#378ADD', green: '#639922',
   pink:   '#D4537E', gray: '#888780', red:   '#E24B4A',
+  blue2:  '#185FA5', teal2:'#0F6E56',
 };
 const TYPE_COLORS = [
-  COLORS.purple, COLORS.teal,  COLORS.blue,
+  COLORS.purple, COLORS.teal,  COLORS.blue,  COLORS.amber,
+  COLORS.coral,  COLORS.pink,  COLORS.gray,  COLORS.green,
+  COLORS.red,    COLORS.blue2, COLORS.teal2, COLORS.purple,
   COLORS.amber,  COLORS.coral, COLORS.pink,
-  COLORS.gray,   COLORS.green, COLORS.red,
 ];
 
-const OPP = [
-  { tipo:'PSV / OSRV', pill:'Saturado',      pillBg:'#3a1a1a', pillColor:'#E24B4A', note:'Mercado maduro. Alta concorrência entre operadoras.' },
-  { tipo:'PLSV',       pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Contratos bilionários. Apenas 3–4 players. Barreira altíssima.' },
-  { tipo:'CSV/MPSV',   pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Demanda crescente com expansão do pré-sal.' },
-  { tipo:'AHTS',       pill:'Competitivo',   pillBg:'#3a2a1a', pillColor:'#EF9F27', note:'2º maior segmento. Manuseio de âncoras e reboque.' },
-  { tipo:'SDSV',       pill:'Nicho BR',      pillBg:'#1a2a3a', pillColor:'#378ADD', note:'100% bandeira brasileira. Mergulho raso em crescimento.' },
-  { tipo:'FLOTEL/CSOV',pill:'Importado',     pillBg:'#2a1a3a', pillColor:'#7F77DD', note:'93% estrangeiros. Segmento ainda não nacionalizado.' },
-];
+const OPP_META = {
+  'PSV / OSRV':  { pill:'Saturado',      pillBg:'#3a1a1a', pillColor:'#E24B4A', note:'Mercado maduro. Alta concorrência entre operadoras.' },
+  'PLSV':        { pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Contratos bilionários. Apenas 3–4 players. Barreira altíssima.' },
+  'CSV/MPSV':    { pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Demanda crescente com expansão do pré-sal.' },
+  'AHTS':        { pill:'Competitivo',   pillBg:'#3a2a1a', pillColor:'#EF9F27', note:'2º maior segmento. Manuseio de âncoras e reboque.' },
+  'SDSV':        { pill:'Nicho BR',      pillBg:'#1a2a3a', pillColor:'#378ADD', note:'100% bandeira brasileira. Mergulho raso em crescimento.' },
+  'FLOTEL/CSOV': { pill:'Importado',     pillBg:'#2a1a3a', pillColor:'#7F77DD', note:'Maioria estrangeiros. Segmento ainda não nacionalizado.' },
+};
 
 async function loadData() {
-  try {
-    const r = await fetch('data/abeam-latest.json');
-    if (!r.ok) throw new Error(r.status);
-    return await r.json();
-  } catch(e) {
-    throw e;
-  }
+  const r = await fetch('data/abeam-latest.json');
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
 }
 
 function renderMetrics(data) {
-  const { totais } = data;
+  const { totais, top_empresas } = data;
+  // número real de operadoras vem do total do mercado, não do top_empresas
   const cards = [
-    { label:'Total de embarcações', value: totais.total,       sub: `${Object.keys(data.top_empresas).length > 0 ? data.top_empresas.length : 50} operadoras`, color: COLORS.purple, pct: 100 },
-    { label:'Bandeira brasileira',  value: totais.brasileira,  sub: `${totais.pct_brasileira}% da frota`,         color: COLORS.teal,   pct: totais.pct_brasileira },
-    { label:'Bandeira estrangeira', value: totais.estrangeira, sub: `Queda de 70% vs 2015`,                       color: COLORS.amber,  pct: 100 - totais.pct_brasileira },
-    { label:'Tipo dominante',       value: 'PSV',              sub: `${data.por_tipo[0]?.total || 203} unidades · 42%`, color: COLORS.coral, pct: 42 },
+    { label:'Total de embarcações', value: totais.total,       sub: 'frota ativa no Brasil',           color: COLORS.purple, pct: 100 },
+    { label:'Bandeira brasileira',  value: totais.brasileira,  sub: `${totais.pct_brasileira}% da frota`, color: COLORS.teal,   pct: totais.pct_brasileira },
+    { label:'Bandeira estrangeira', value: totais.estrangeira, sub: 'queda de ~70% vs 2015',            color: COLORS.amber,  pct: Math.round(100 - totais.pct_brasileira) },
+    { label:'Tipo dominante',       value: data.por_tipo[0]?.tipo || 'PSV',
+      sub: `${data.por_tipo[0]?.total || '—'} unidades · ${data.por_tipo[0]?.pct || '—'}%`,
+      color: COLORS.coral, pct: data.por_tipo[0]?.pct || 42 },
   ];
-
   document.getElementById('metrics-row').innerHTML = cards.map(c => `
     <div class="metric">
       <div class="metric-label">${c.label}</div>
       <div class="metric-value">${c.value}</div>
       <div class="metric-sub">${c.sub}</div>
-      <div class="metric-bar" style="background:${c.color};width:${c.pct}%"></div>
+      <div class="metric-bar" style="background:${c.color};width:${Math.min(c.pct,100)}%"></div>
     </div>
   `).join('');
 }
@@ -309,15 +284,12 @@ function renderBandeira(data) {
   const { totais } = data;
   const pctBR = totais.pct_brasileira;
   const pctEX = 100 - pctBR;
-
   document.getElementById('bandeira-insight').textContent =
     `O Brasil reduziu embarcações estrangeiras em ~70% desde 2015 — resultado direto da Lei 9.432/97.`;
-
   document.getElementById('flag-track').innerHTML = `
     <div class="flag-seg" style="width:${pctBR}%;background:${COLORS.teal};color:#04342C">${pctBR}%</div>
     <div class="flag-seg" style="width:${pctEX}%;background:${COLORS.amber};color:#412402">${pctEX}%</div>
   `;
-
   document.getElementById('flag-legend').innerHTML = `
     <span style="display:flex;align-items:center;gap:5px">
       <span style="width:10px;height:10px;background:${COLORS.teal};border-radius:2px;display:inline-block"></span>
@@ -331,37 +303,45 @@ function renderBandeira(data) {
 }
 
 function renderDonut(data) {
-  const tipos = data.por_tipo.slice(0, 8);
+  const top = data.por_tipo.slice(0, 8);
+  document.getElementById('donut-insight').textContent =
+    `${top[0].tipo} lidera com ${top[0].pct}% — ${top[0].total} embarcações.`;
   new Chart(document.getElementById('donutChart'), {
     type: 'doughnut',
     data: {
-      labels:   tipos.map(t => t.tipo),
-      datasets: [{ data: tipos.map(t => t.total), backgroundColor: TYPE_COLORS, borderWidth: 0 }],
+      labels:   top.map(t => t.tipo),
+      datasets: [{ data: top.map(t => t.total), backgroundColor: TYPE_COLORS.slice(0, top.length), borderWidth: 0 }],
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       cutout: '65%',
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/data.totais.total*100)}%)` } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw / data.totais.total * 100)}%)` } },
       },
     },
   });
 }
 
-function renderHBars(containerId, items, maxVal, colorFn) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = items.map(item => {
-    const pct = Math.round((item.total / maxVal) * 100);
-    const color = colorFn(item);
+// FIX: colorFn agora recebe (item, index) corretamente
+function renderHBarsTipos(data) {
+  const max = data.por_tipo[0].total;
+  document.getElementById('tipos-insight').textContent =
+    `${data.por_tipo[0].tipo} representa ${data.por_tipo[0].pct}% da frota — mercado denso. PLSV e CSV são escassos e de alto valor.`;
+
+  document.getElementById('hbars-tipos').innerHTML = data.por_tipo.map((item, i) => {
+    const pct   = Math.round((item.total / max) * 100);
+    const color = TYPE_COLORS[i] || COLORS.gray;
     return `
       <div class="hbar">
         <div class="hbar-header">
-          <span>${item.tipo || item.empresa}</span>
-          <span>${item.total}${item.pct ? ' · ' + item.pct + '%' : ''}</span>
+          <span>${item.tipo}</span>
+          <span>${item.total} · ${item.pct}%</span>
         </div>
         <div class="hbar-track">
-          <div class="hbar-fill" style="width:${pct}%;background:${color}">${item.total}</div>
+          <div class="hbar-fill" style="width:${Math.max(pct,1)}%;background:${color}">
+            ${item.total > 10 ? item.total : ''}
+          </div>
         </div>
       </div>
     `;
@@ -370,10 +350,12 @@ function renderHBars(containerId, items, maxVal, colorFn) {
 
 function renderEmpresas(data) {
   const max = data.top_empresas[0].total;
-  const el = document.getElementById('hbars-empresas');
-  el.innerHTML = data.top_empresas.map((e, i) => {
-    const pctBR = Math.round((e.brasileira / e.total) * 100);
-    const pctEX = 100 - pctBR;
+  document.getElementById('empresas-insight').textContent =
+    `${data.top_empresas[0].empresa} lidera com ${data.top_empresas[0].total} embarcações — ${Math.round(data.top_empresas[0].total / data.totais.total * 100)}% da frota total.`;
+
+  document.getElementById('hbars-empresas').innerHTML = data.top_empresas.map(e => {
+    const pctBR = Math.round((e.brasileira / max) * 100);
+    const pctEX = Math.round((e.estrangeira / max) * 100);
     return `
       <div class="hbar">
         <div class="hbar-header">
@@ -381,8 +363,14 @@ function renderEmpresas(data) {
           <span>${e.total} embarcações</span>
         </div>
         <div class="hbar-track" style="display:flex;height:24px">
-          <div style="width:${Math.round(e.brasileira/max*100)}%;background:${COLORS.purple};border-radius:4px 0 0 4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:#fff;min-width:${e.brasileira>0?8:0}px">${e.brasileira > 5 ? e.brasileira : ''}</div>
-          <div style="width:${Math.round(e.estrangeira/max*100)}%;background:${COLORS.amber};border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:600;color:#412402;min-width:${e.estrangeira>0?8:0}px">${e.estrangeira > 3 ? e.estrangeira : ''}</div>
+          <div style="width:${Math.max(pctBR,e.brasileira>0?1:0)}%;background:${COLORS.purple};border-radius:4px 0 0 4px;
+               display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:#fff">
+            ${e.brasileira > 5 ? e.brasileira : ''}
+          </div>
+          <div style="width:${Math.max(pctEX,e.estrangeira>0?1:0)}%;background:${COLORS.amber};border-radius:0 4px 4px 0;
+               display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:600;color:#412402">
+            ${e.estrangeira > 3 ? e.estrangeira : ''}
+          </div>
         </div>
       </div>
     `;
@@ -392,13 +380,12 @@ function renderEmpresas(data) {
 function renderOportunidades(data) {
   const tipoMap = {};
   data.por_tipo.forEach(t => tipoMap[t.tipo] = t);
-
-  document.getElementById('opp-grid').innerHTML = OPP.map(o => {
-    const t = tipoMap[o.tipo] || {};
+  document.getElementById('opp-grid').innerHTML = Object.entries(OPP_META).map(([tipo, o]) => {
+    const t = tipoMap[tipo] || {};
     return `
       <div class="opp-card">
-        <div class="opp-label">${o.tipo}</div>
-        <div class="opp-val">${t.total || '—'}</div>
+        <div class="opp-label">${tipo}</div>
+        <div class="opp-val">${t.total ?? '—'}</div>
         <div class="opp-note">${o.note}</div>
         <span class="opp-pill" style="background:${o.pillBg};color:${o.pillColor}">${o.pill}</span>
       </div>
@@ -409,21 +396,18 @@ function renderOportunidades(data) {
 async function init() {
   try {
     const data = await loadData();
-
-    document.getElementById('loading').style.display = 'none';
+    document.getElementById('loading').style.display  = 'none';
     document.getElementById('dashboard').style.display = 'block';
 
-    document.getElementById('periodo-badge').textContent = data.periodo || 'Período não identificado';
+    document.getElementById('periodo-badge').textContent =
+      data.periodo || 'Período não identificado';
     document.getElementById('footer-updated').textContent =
       `Atualizado em: ${new Date(data.extracted).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}`;
-
-    document.getElementById('tipos-insight').textContent =
-      `${data.por_tipo[0]?.tipo} representa ${data.por_tipo[0]?.pct}% da frota — mercado denso. PLSV e CSV são escassos e de alto valor.`;
 
     renderMetrics(data);
     renderBandeira(data);
     renderDonut(data);
-    renderHBars('hbars-tipos', data.por_tipo, data.por_tipo[0].total, (_, i) => TYPE_COLORS[i] || COLORS.gray);
+    renderHBarsTipos(data);
     renderEmpresas(data);
     renderOportunidades(data);
 
@@ -433,12 +417,6 @@ async function init() {
     console.error('Erro ao carregar dados ABEAM:', e);
   }
 }
-
-// Passa o índice do item para a função de cor
-document.getElementById('hbars-tipos') && (function(){
-  const el = document.getElementById('hbars-tipos');
-  // re-renderizado corretamente abaixo
-})();
 
 init();
 </script>
