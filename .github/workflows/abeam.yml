@@ -58,8 +58,8 @@ jobs:
 
       - name: Preparar pasta public para deploy
         run: |
-          cp index.html public/index.html
           mkdir -p public/data
+          cp index.html public/index.html
 
       - name: Deploy no GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
