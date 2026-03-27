@@ -1,0 +1,86 @@
+name: ABEAM Pipeline
+
+on:
+  schedule:
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar pipeline ABEAM
+        run: python scraper.py --once
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_PASSWORD: ${{ secrets.WP_PASSWORD }}
+          WP_PAGE_ID: ${{ secrets.WP_PAGE_ID }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          STATIC_DIR: public/data
+
+      - name: Garantir pasta public
+        run: |
+          mkdir -p public/data
+          cp index.html public/index.html
+          if [ -f data/json/abeam-latest.json ]; then
+            cp data/json/abeam-latest.json public/data/abeam-latest.json
+            echo "JSON atualizado copiado para public/data."
+          elif [ -f abeam-latest.json ]; then
+            cp abeam-latest.json public/data/abeam-latest.json
+            echo "Nenhum JSON novo. Mantendo seed versionado do repositório."
+          else
+            echo "Erro: nenhum JSON disponível para o dashboard."
+            exit 1
+          fi
+
+      - name: Publicar artefatos
+        uses: actions/upload-artifact@v4
+        with:
+          name: abeam-data-${{ github.run_number }}
+          path: |
+            data/json/
+            pipeline.log
+            public/data/abeam-latest.json
+          retention-days: 30
+
+      - name: Deploy no GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          keep_files: true
+
+      - name: Resumo da execução
+        if: always()
+        run: |
+          echo "## Resultado do Pipeline ABEAM" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f public/data/abeam-latest.json ]; then
+            PERIODO=$(python -c "import json;print(json.load(open('public/data/abeam-latest.json')).get('periodo','?'))")
+            TOTAL=$(python -c "import json;print(json.load(open('public/data/abeam-latest.json')).get('totais',{}).get('total','?'))")
+            BR=$(python -c "import json;print(json.load(open('public/data/abeam-latest.json')).get('totais',{}).get('brasileira','?'))")
+            EX=$(python -c "import json;print(json.load(open('public/data/abeam-latest.json')).get('totais',{}).get('estrangeira','?'))")
+            echo "- **Período:** $PERIODO" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Total de embarcações:** $TOTAL" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Bandeira brasileira:** $BR" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Bandeira estrangeira:** $EX" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Arquivo publicado:** \`public/data/abeam-latest.json\`" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Nenhum JSON disponível para publicação." >> "$GITHUB_STEP_SUMMARY"
+          fi
