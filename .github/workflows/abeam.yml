@@ -60,7 +60,14 @@ jobs:
         run: |
           mkdir -p public/data
           cp index.html public/index.html
-          cp data/json/abeam-latest.json public/data/abeam-latest.json
+          if [ -f data/json/abeam-latest.json ]; then
+            cp data/json/abeam-latest.json public/data/abeam-latest.json
+            echo "JSON copiado com sucesso."
+          elif [ -f public/data/abeam-latest.json ]; then
+            echo "JSON já existe em public/data — mantendo versão anterior."
+          else
+            echo "Nenhum JSON disponível — dashboard não terá dados neste deploy."
+          fi
 
       - name: Deploy no GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
