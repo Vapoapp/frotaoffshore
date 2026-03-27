@@ -60,6 +60,7 @@ jobs:
         run: |
           mkdir -p public/data
           cp index.html public/index.html
+          cp data/json/abeam-latest.json public/data/abeam-latest.json
 
       - name: Deploy no GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
