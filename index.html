@@ -3,254 +3,389 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZWN759NS6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9ZWN759NS6');
+  </script>
   <title>Radar da Frota Offshore — VAPOZEIRO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg:      #0f0f0f;
-      --surface: #1a1a1a;
-      --border:  #2a2a2a;
-      --text:    #e8e6de;
-      --muted:   #888780;
-      --purple:  #7F77DD;
-      --teal:    #1D9E75;
-      --amber:   #EF9F27;
-      --coral:   #D85A30;
-      --blue:    #378ADD;
-      --green:   #639922;
-      --radius:  10px;
+      --bg: #eef2f5;
+      --bg-accent: radial-gradient(circle at top center, rgba(15,23,42,0.04), transparent 35%);
+      --panel: rgba(255,255,255,0.88);
+      --panel-2: #ffffff;
+      --text: #183248;
+      --muted: #7f96aa;
+      --line: rgba(24,50,72,0.10);
+      --accent: #0f8c55;
+      --accent-soft: rgba(15,140,85,0.10);
+      --shadow: 0 18px 48px rgba(16,24,40,0.08);
+      --header-bg: rgba(255,255,255,0.92);
+      --header-line: rgba(24,50,72,0.08);
+      --purple: #534AB7;
+      --teal: #0F6E56;
+      --amber: #BA7517;
+      --coral: #993C1D;
+      --blue: #185FA5;
+      --radius: 16px;
     }
+    body.dark {
+      --bg: #08141f;
+      --bg-accent: radial-gradient(circle at top center, rgba(18,111,76,0.12), transparent 32%);
+      --panel: rgba(13,27,39,0.92);
+      --panel-2: #102334;
+      --text: #eef6fb;
+      --muted: #9ab0c2;
+      --line: rgba(255,255,255,0.08);
+      --accent: #22a96b;
+      --accent-soft: rgba(34,169,107,0.12);
+      --shadow: 0 18px 50px rgba(0,0,0,0.28);
+      --header-bg: rgba(8,20,31,0.9);
+      --header-line: rgba(255,255,255,0.08);
+      --purple: #7F77DD;
+      --teal: #1D9E75;
+      --amber: #EF9F27;
+      --coral: #D85A30;
+      --blue: #378ADD;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg-accent), var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-    header { margin-bottom: 2.5rem; }
-    .badge {
-      display: inline-block;
-      font-size: 11px; font-weight: 600; letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--purple);
-      border: 1px solid var(--purple);
-      border-radius: 20px;
-      padding: 3px 12px;
-      margin-bottom: 1rem;
-    }
-    header h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: .5rem; }
-    header p  { color: var(--muted); font-size: 14px; }
-    #periodo-badge {
-      display: inline-block; font-size: 12px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 2px 12px; margin-top: .5rem;
-      color: var(--muted);
+      min-height: 100vh;
+      transition: background .25s ease, color .25s ease;
     }
 
-    #loading, #error {
-      text-align: center; padding: 4rem 2rem;
-      color: var(--muted); font-size: 14px;
+    /* ── Topbar (idêntico ao Vapozeiro) ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--header-line);
     }
-    #error { color: var(--coral); display: none; }
+    .topbar-inner {
+      max-width: 1240px; margin: 0 auto;
+      padding: 14px 24px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .back-btn, .theme-toggle {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.6);
+      color: var(--text);
+      border-radius: 10px;
+      height: 38px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 14px;
+      text-decoration: none;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .2s ease, background .2s ease;
+      white-space: nowrap;
+    }
+    body.dark .back-btn, body.dark .theme-toggle { background: rgba(255,255,255,0.04); }
+    .back-btn:hover, .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(15,140,85,0.35);
+    }
+    .brand-copy { min-width: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .brand-title {
+      font-size: 19px; font-weight: 800; letter-spacing: -0.03em;
+      color: #0c1e2e; text-decoration: none;
+    }
+    .brand-title .green { color: var(--accent); }
+    body.dark .brand-title { color: #f4f8fb; }
+    .brand-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: .18em;
+      text-transform: uppercase; color: #8ba0b2; white-space: nowrap;
+    }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .theme-toggle .indicator {
+      width: 8px; height: 8px; border-radius: 999px;
+      background: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124,58,237,0.12);
+      flex: 0 0 auto;
+    }
+    body.dark .theme-toggle .indicator {
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.14);
+    }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 24px 60px; }
+
+    .page-header {
+      margin-bottom: 28px;
+    }
+    .page-header h1 {
+      font-size: 30px; font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .page-header p { color: var(--muted); max-width: 640px; font-size: 15px; }
+    .periodo-badge {
+      display: inline-block; margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      background: var(--accent-soft); color: var(--accent);
+      border: 1px solid rgba(15,140,85,0.2);
+      border-radius: 999px; padding: 4px 14px;
+    }
+
+    /* ── Loading / Error ── */
+    #loading { text-align: center; padding: 5rem 2rem; color: var(--muted); font-size: 14px; }
+    #error   { text-align: center; padding: 3rem 2rem; color: #ef4444; display: none; font-size: 14px; }
     .spinner {
-      width: 32px; height: 32px; border: 2px solid var(--border);
-      border-top-color: var(--purple); border-radius: 50%;
-      animation: spin .8s linear infinite; margin: 0 auto 1rem;
+      width: 32px; height: 32px;
+      border: 2px solid var(--line); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin .8s linear infinite;
+      margin: 0 auto 1rem;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     #dashboard { display: none; }
 
+    /* ── Metric cards ── */
     .metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px; margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px; margin-bottom: 24px;
     }
     .metric {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--panel);
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
-    .metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-    .metric-value { font-size: 32px; font-weight: 700; line-height: 1; }
-    .metric-sub   { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .metric-bar   { height: 3px; border-radius: 2px; margin-top: 12px; opacity: .7; }
+    .metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; font-weight: 600; }
+    .metric-value { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+    .metric-sub   { font-size: 12px; color: var(--muted); margin-top: 5px; }
+    .metric-bar   { height: 3px; border-radius: 2px; margin-top: 14px; opacity: .6; }
+
+    /* ── Panel cards ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      margin-bottom: 18px;
+    }
+    .panel-title {
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .panel-insight {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 18px; line-height: 1.5;
+      padding-left: 12px;
+      border-left: 2px solid var(--accent);
+    }
 
     .grid2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 16px; margin-bottom: 16px;
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-    .card-title {
-      font-size: 13px; font-weight: 600; color: var(--text);
-      text-transform: uppercase; letter-spacing: .06em;
-      margin-bottom: .25rem;
-    }
-    .card-insight {
-      font-size: 13px; color: var(--muted); margin-bottom: 1.25rem;
-      padding-left: .75rem;
-      border-left: 2px solid var(--purple);
-      line-height: 1.5;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px; margin-bottom: 18px;
     }
 
-    .hbar { margin-bottom: 10px; }
-    .hbar-header {
-      display: flex; justify-content: space-between;
-      font-size: 12px; color: var(--muted); margin-bottom: 4px;
-    }
-    .hbar-track {
-      height: 24px; background: var(--bg);
-      border-radius: 4px; overflow: hidden;
-    }
-    .hbar-fill {
-      height: 100%; border-radius: 4px;
-      display: flex; align-items: center;
-      padding-left: 8px;
-      font-size: 11px; font-weight: 600; color: #fff;
-      transition: width .8s ease;
-      min-width: 2px;
-    }
-
+    /* ── Bandeira ── */
     .flag-track {
-      display: flex; height: 36px; border-radius: 6px;
-      overflow: hidden; margin-bottom: 12px;
+      display: flex; height: 40px;
+      border-radius: 10px; overflow: hidden; margin-bottom: 14px;
     }
     .flag-seg {
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 700;
+      transition: width .8s ease;
+    }
+    .legend-row { display: flex; gap: 18px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+    /* ── H-bars ── */
+    .hbar { margin-bottom: 11px; }
+    .hbar-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+    .hbar-track  { height: 26px; background: rgba(0,0,0,0.06); border-radius: 6px; overflow: hidden; }
+    body.dark .hbar-track { background: rgba(255,255,255,0.05); }
+    .hbar-fill   {
+      height: 100%; border-radius: 6px;
+      display: flex; align-items: center; padding-left: 10px;
+      font-size: 11px; font-weight: 700; color: #fff;
+      transition: width .8s ease; min-width: 2px;
     }
 
-    .opp-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-    }
+    /* ── Linha histórica ── */
+    .line-legend { display: flex; gap: 18px; margin-bottom: 14px; flex-wrap: wrap; }
+    .line-leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .line-leg-bar  { width: 20px; height: 3px; border-radius: 2px; }
+
+    /* ── Oportunidades ── */
+    .opp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; }
     .opp-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
+      background: rgba(0,0,0,0.04); border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px;
     }
-    .opp-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-    .opp-val   { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-    .opp-note  { font-size: 11px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; }
-    .opp-pill  {
-      display: inline-block; font-size: 10px; font-weight: 600;
-      padding: 2px 10px; border-radius: 20px;
-    }
+    body.dark .opp-card { background: rgba(255,255,255,0.03); }
+    .opp-label { font-size: 11px; color: var(--muted); margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .opp-val   { font-size: 22px; font-weight: 800; margin-bottom: 5px; letter-spacing: -0.02em; }
+    .opp-note  { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+    .opp-pill  { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 999px; letter-spacing: .04em; }
 
-    footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--line);
       font-size: 12px; color: var(--muted);
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
     }
-    footer a { color: var(--purple); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
 
     @media (max-width: 600px) {
-      header h1 { font-size: 22px; }
-      .metric-value { font-size: 26px; }
+      .page-header h1 { font-size: 24px; }
+      .metric-value { font-size: 28px; }
     }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <header>
-    <div class="badge">VAPOZEIRO · Offshore Brasil</div>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <a class="back-btn" href="https://vapozeiro.com.br/#ferramentas">← Voltar</a>
+      <div class="brand-copy">
+        <a class="brand-title" href="https://vapozeiro.com.br">VAPO<span class="green">ZEIRO</span></a>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema">
+        <span class="indicator"></span>
+        <span id="themeLabel">CLARO</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="page-header">
     <h1>Radar da Frota de Apoio Marítimo</h1>
-    <p>Dados oficiais ABEAM/Syndarma, atualizados automaticamente todo mês.</p>
-    <span id="periodo-badge">Carregando...</span>
-  </header>
+    <p>Dados oficiais ABEAM/Syndarma, atualizados automaticamente todo mês com o relatório da frota offshore brasileira.</p>
+    <span class="periodo-badge" id="periodo-badge">Carregando...</span>
+  </div>
 
-  <div id="loading">
-    <div class="spinner"></div>
-    Carregando dados da frota...
-  </div>
-  <div id="error">
-    Não foi possível carregar os dados. Tente novamente mais tarde.
-  </div>
+  <div id="loading"><div class="spinner"></div>Carregando dados da frota...</div>
+  <div id="error">Não foi possível carregar os dados. Tente novamente mais tarde.</div>
 
   <div id="dashboard">
 
     <div class="metrics" id="metrics-row"></div>
 
     <div class="grid2">
-      <div class="card">
-        <div class="card-title">Bandeira da frota</div>
-        <div class="card-insight" id="bandeira-insight"></div>
+      <div class="panel">
+        <div class="panel-title">Bandeira da frota</div>
+        <div class="panel-insight" id="bandeira-insight"></div>
         <div class="flag-track" id="flag-track"></div>
-        <div style="display:flex;gap:16px;font-size:12px;color:var(--muted)" id="flag-legend"></div>
+        <div class="legend-row" id="flag-legend"></div>
       </div>
-      <div class="card">
-        <div class="card-title">Distribuição por tipo</div>
-        <div class="card-insight" id="donut-insight"></div>
-        <div style="position:relative;height:200px">
+      <div class="panel">
+        <div class="panel-title">Distribuição por tipo</div>
+        <div class="panel-insight" id="donut-insight"></div>
+        <div style="position:relative;height:210px">
           <canvas id="donutChart"></canvas>
         </div>
       </div>
     </div>
 
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">Ranking por tipo de embarcação</div>
-      <div class="card-insight" id="tipos-insight"></div>
+    <div class="panel">
+      <div class="panel-title">Ranking por tipo de embarcação</div>
+      <div class="panel-insight" id="tipos-insight"></div>
       <div id="hbars-tipos"></div>
     </div>
 
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">Top 10 operadoras</div>
-      <div class="card-insight" id="empresas-insight"></div>
+    <div class="panel">
+      <div class="panel-title">Top 10 operadoras</div>
+      <div class="panel-insight" id="empresas-insight"></div>
       <div id="hbars-empresas"></div>
     </div>
 
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-title">Radar de oportunidades</div>
-      <div class="card-insight">Saturado vs nicho — onde está o dinheiro de verdade.</div>
+    <div class="panel">
+      <div class="panel-title">Evolução histórica da frota (1997–2026)</div>
+      <div class="panel-insight">A frota ainda não recuperou o pico de 2014. A retomada é puxada pela bandeira brasileira — a estrangeira opera em mínima histórica.</div>
+      <div class="line-legend">
+        <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--purple)"></div>Frota total</div>
+        <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--teal)"></div>Bandeira brasileira</div>
+        <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--amber);border-top:2px dashed var(--amber);height:0"></div>Estrangeira</div>
+      </div>
+      <div style="position:relative;width:100%;height:230px">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Radar de oportunidades</div>
+      <div class="panel-insight">Saturado vs nicho — onde está o dinheiro de verdade no mercado offshore.</div>
       <div class="opp-grid" id="opp-grid"></div>
     </div>
 
   </div>
 
-  <footer>
+  <div class="footer">
     <span>Fonte: <a href="https://abeam.org.br/estudo-da-frota/" target="_blank">ABEAM — Estudo da Frota</a> · Syndarma · ANTAQ · DPC</span>
     <span id="footer-updated"></span>
-  </footer>
+  </div>
 
 </div>
 
 <script>
-const COLORS = {
-  purple: '#7F77DD', teal: '#1D9E75', amber: '#EF9F27',
-  coral:  '#D85A30', blue: '#378ADD', green: '#639922',
-  pink:   '#D4537E', gray: '#888780', red:   '#E24B4A',
-  blue2:  '#185FA5', teal2:'#0F6E56',
-};
-const TYPE_COLORS = [
-  COLORS.purple, COLORS.teal,  COLORS.blue,  COLORS.amber,
-  COLORS.coral,  COLORS.pink,  COLORS.gray,  COLORS.green,
-  COLORS.red,    COLORS.blue2, COLORS.teal2, COLORS.purple,
-  COLORS.amber,  COLORS.coral, COLORS.pink,
-];
+  const STORAGE_KEY = 'vapozeiro-theme';
+
+  function applyTheme(theme) {
+    document.body.classList.toggle('dark', theme === 'dark');
+    document.getElementById('themeLabel').textContent = theme === 'dark' ? 'CLARO' : 'ESCURO';
+    try { localStorage.setItem(STORAGE_KEY, theme); } catch(e) {}
+  }
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    applyTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    applyTheme(saved === 'light' || saved === 'dark' ? saved : 'dark');
+  } catch(e) { applyTheme('dark'); }
+</script>
+
+<script>
+const TYPE_COLORS_LIGHT = ['#534AB7','#0F6E56','#185FA5','#BA7517','#993C1D','#993556','#5F5E5A','#3B6D11','#A32D2D','#0C447C','#085041'];
+const TYPE_COLORS_DARK  = ['#7F77DD','#1D9E75','#378ADD','#EF9F27','#D85A30','#D4537E','#888780','#639922','#E24B4A','#378ADD','#1D9E75'];
+
+function getColors() {
+  return document.body.classList.contains('dark') ? TYPE_COLORS_DARK : TYPE_COLORS_LIGHT;
+}
 
 const OPP_META = {
-  'PSV / OSRV':  { pill:'Saturado',      pillBg:'#3a1a1a', pillColor:'#E24B4A', note:'Mercado maduro. Alta concorrência entre operadoras.' },
-  'PLSV':        { pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Contratos bilionários. Apenas 3–4 players. Barreira altíssima.' },
-  'CSV/MPSV':    { pill:'Nicho premium', pillBg:'#1a3a1a', pillColor:'#1D9E75', note:'Demanda crescente com expansão do pré-sal.' },
-  'AHTS':        { pill:'Competitivo',   pillBg:'#3a2a1a', pillColor:'#EF9F27', note:'2º maior segmento. Manuseio de âncoras e reboque.' },
-  'SDSV':        { pill:'Nicho BR',      pillBg:'#1a2a3a', pillColor:'#378ADD', note:'100% bandeira brasileira. Mergulho raso em crescimento.' },
-  'FLOTEL/CSOV': { pill:'Importado',     pillBg:'#2a1a3a', pillColor:'#7F77DD', note:'Maioria estrangeiros. Segmento ainda não nacionalizado.' },
+  'PSV / OSRV':  { pill:'Saturado',      pillBg:'#fef2f2', pillColor:'#991b1b', note:'Mercado maduro. Alta concorrência entre operadoras.' },
+  'PLSV':        { pill:'Nicho premium', pillBg:'#f0fdf4', pillColor:'#166534', note:'Contratos bilionários. Apenas 3–4 players. Barreira altíssima.' },
+  'CSV/MPSV':    { pill:'Nicho premium', pillBg:'#f0fdf4', pillColor:'#166534', note:'Demanda crescente com expansão do pré-sal.' },
+  'AHTS':        { pill:'Competitivo',   pillBg:'#fffbeb', pillColor:'#92400e', note:'2º maior segmento. Manuseio de âncoras e reboque.' },
+  'SDSV':        { pill:'Nicho BR',      pillBg:'#eff6ff', pillColor:'#1e40af', note:'100% bandeira brasileira. Mergulho raso em crescimento.' },
+  'FLOTEL/CSOV': { pill:'Importado',     pillBg:'#f5f3ff', pillColor:'#5b21b6', note:'Maioria estrangeiros. Segmento ainda não nacionalizado.' },
 };
 
 async function loadData() {
@@ -260,15 +395,13 @@ async function loadData() {
 }
 
 function renderMetrics(data) {
-  const { totais, top_empresas } = data;
-  // número real de operadoras vem do total do mercado, não do top_empresas
+  const { totais, por_tipo } = data;
   const cards = [
-    { label:'Total de embarcações', value: totais.total,       sub: 'frota ativa no Brasil',           color: COLORS.purple, pct: 100 },
-    { label:'Bandeira brasileira',  value: totais.brasileira,  sub: `${totais.pct_brasileira}% da frota`, color: COLORS.teal,   pct: totais.pct_brasileira },
-    { label:'Bandeira estrangeira', value: totais.estrangeira, sub: 'queda de ~70% vs 2015',            color: COLORS.amber,  pct: Math.round(100 - totais.pct_brasileira) },
-    { label:'Tipo dominante',       value: data.por_tipo[0]?.tipo || 'PSV',
-      sub: `${data.por_tipo[0]?.total || '—'} unidades · ${data.por_tipo[0]?.pct || '—'}%`,
-      color: COLORS.coral, pct: data.por_tipo[0]?.pct || 42 },
+    { label:'Total de embarcações', value: totais.total,       sub: 'frota ativa no Brasil',                color:'#534AB7', pct: 100 },
+    { label:'Bandeira brasileira',  value: totais.brasileira,  sub: `${totais.pct_brasileira}% da frota`,   color:'#0F6E56', pct: totais.pct_brasileira },
+    { label:'Bandeira estrangeira', value: totais.estrangeira, sub: 'queda de ~70% vs 2015',                color:'#BA7517', pct: 100 - totais.pct_brasileira },
+    { label:'Tipo dominante',       value: por_tipo[0]?.tipo || 'PSV',
+      sub: `${por_tipo[0]?.total} unidades · ${por_tipo[0]?.pct}%`,                                         color:'#993C1D', pct: por_tipo[0]?.pct || 42 },
   ];
   document.getElementById('metrics-row').innerHTML = cards.map(c => `
     <div class="metric">
@@ -282,99 +415,118 @@ function renderMetrics(data) {
 
 function renderBandeira(data) {
   const { totais } = data;
-  const pctBR = totais.pct_brasileira;
-  const pctEX = 100 - pctBR;
+  const pctBR = totais.pct_brasileira, pctEX = 100 - pctBR;
   document.getElementById('bandeira-insight').textContent =
-    `O Brasil reduziu embarcações estrangeiras em ~70% desde 2015 — resultado direto da Lei 9.432/97.`;
+    'O Brasil reduziu embarcações estrangeiras em ~70% desde 2015 — resultado direto da Lei 9.432/97.';
   document.getElementById('flag-track').innerHTML = `
-    <div class="flag-seg" style="width:${pctBR}%;background:${COLORS.teal};color:#04342C">${pctBR}%</div>
-    <div class="flag-seg" style="width:${pctEX}%;background:${COLORS.amber};color:#412402">${pctEX}%</div>
+    <div class="flag-seg" style="width:${pctBR}%;background:#0F6E56;color:#d1fae5">${pctBR}%</div>
+    <div class="flag-seg" style="width:${pctEX}%;background:#BA7517;color:#fef3c7">${pctEX}%</div>
   `;
   document.getElementById('flag-legend').innerHTML = `
-    <span style="display:flex;align-items:center;gap:5px">
-      <span style="width:10px;height:10px;background:${COLORS.teal};border-radius:2px;display:inline-block"></span>
-      Brasileira (${totais.brasileira})
-    </span>
-    <span style="display:flex;align-items:center;gap:5px">
-      <span style="width:10px;height:10px;background:${COLORS.amber};border-radius:2px;display:inline-block"></span>
-      Estrangeira (${totais.estrangeira})
-    </span>
+    <div class="legend-item"><div class="legend-dot" style="background:#0F6E56"></div>Brasileira (${totais.brasileira})</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>Estrangeira (${totais.estrangeira})</div>
   `;
 }
 
+let donutInstance = null;
 function renderDonut(data) {
   const top = data.por_tipo.slice(0, 8);
+  const colors = getColors();
   document.getElementById('donut-insight').textContent =
     `${top[0].tipo} lidera com ${top[0].pct}% — ${top[0].total} embarcações.`;
-  new Chart(document.getElementById('donutChart'), {
+  if (donutInstance) donutInstance.destroy();
+  donutInstance = new Chart(document.getElementById('donutChart'), {
     type: 'doughnut',
     data: {
-      labels:   top.map(t => t.tipo),
-      datasets: [{ data: top.map(t => t.total), backgroundColor: TYPE_COLORS.slice(0, top.length), borderWidth: 0 }],
+      labels: top.map(t => t.tipo),
+      datasets: [{ data: top.map(t => t.total), backgroundColor: colors.slice(0, top.length), borderWidth: 0 }],
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '65%',
+      responsive: true, maintainAspectRatio: false, cutout: '65%',
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw / data.totais.total * 100)}%)` } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/data.totais.total*100)}%)` } },
       },
     },
   });
 }
 
-// FIX: colorFn agora recebe (item, index) corretamente
-function renderHBarsTipos(data) {
+function renderTipos(data) {
   const max = data.por_tipo[0].total;
+  const colors = getColors();
   document.getElementById('tipos-insight').textContent =
     `${data.por_tipo[0].tipo} representa ${data.por_tipo[0].pct}% da frota — mercado denso. PLSV e CSV são escassos e de alto valor.`;
-
   document.getElementById('hbars-tipos').innerHTML = data.por_tipo.map((item, i) => {
-    const pct   = Math.round((item.total / max) * 100);
-    const color = TYPE_COLORS[i] || COLORS.gray;
+    const pct = Math.round((item.total / max) * 100);
     return `
       <div class="hbar">
-        <div class="hbar-header">
-          <span>${item.tipo}</span>
-          <span>${item.total} · ${item.pct}%</span>
-        </div>
+        <div class="hbar-header"><span>${item.tipo}</span><span>${item.total} · ${item.pct}%</span></div>
         <div class="hbar-track">
-          <div class="hbar-fill" style="width:${Math.max(pct,1)}%;background:${color}">
+          <div class="hbar-fill" style="width:${Math.max(pct,1)}%;background:${colors[i]||colors[0]}">
             ${item.total > 10 ? item.total : ''}
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
 function renderEmpresas(data) {
   const max = data.top_empresas[0].total;
+  const colors = getColors();
   document.getElementById('empresas-insight').textContent =
-    `${data.top_empresas[0].empresa} lidera com ${data.top_empresas[0].total} embarcações — ${Math.round(data.top_empresas[0].total / data.totais.total * 100)}% da frota total.`;
-
+    `${data.top_empresas[0].empresa} lidera com ${data.top_empresas[0].total} embarcações — ${Math.round(data.top_empresas[0].total/data.totais.total*100)}% da frota total.`;
   document.getElementById('hbars-empresas').innerHTML = data.top_empresas.map(e => {
     const pctBR = Math.round((e.brasileira / max) * 100);
     const pctEX = Math.round((e.estrangeira / max) * 100);
     return `
       <div class="hbar">
-        <div class="hbar-header">
-          <span>${e.empresa}</span>
-          <span>${e.total} embarcações</span>
-        </div>
-        <div class="hbar-track" style="display:flex;height:24px">
-          <div style="width:${Math.max(pctBR,e.brasileira>0?1:0)}%;background:${COLORS.purple};border-radius:4px 0 0 4px;
-               display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:#fff">
+        <div class="hbar-header"><span>${e.empresa}</span><span>${e.total} embarcações</span></div>
+        <div class="hbar-track" style="display:flex;height:26px">
+          <div style="width:${Math.max(pctBR,e.brasileira>0?1:0)}%;background:${colors[0]};border-radius:6px 0 0 6px;
+               display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:700;color:#fff">
             ${e.brasileira > 5 ? e.brasileira : ''}
           </div>
-          <div style="width:${Math.max(pctEX,e.estrangeira>0?1:0)}%;background:${COLORS.amber};border-radius:0 4px 4px 0;
-               display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:11px;font-weight:600;color:#412402">
+          <div style="width:${Math.max(pctEX,e.estrangeira>0?1:0)}%;background:${colors[3]};border-radius:0 6px 6px 0;
+               display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:11px;font-weight:700;color:#fff">
             ${e.estrangeira > 3 ? e.estrangeira : ''}
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
+}
+
+let lineInstance = null;
+function renderHistorico() {
+  const isDark = document.body.classList.contains('dark');
+  const anos  = ['1997','2000','2004','2007','2010','2012','2014','2016','2018','2020','2022','2024','Fev/26'];
+  const total = [137,  155,   205,   280,   400,   460,   500,   380,   360,   400,   430,   453,   481];
+  const brArr = [32,   65,    90,    112,   200,   243,   257,   260,   290,   330,   360,   382,   390];
+  const exArr = [105,  90,    115,   168,   200,   217,   243,   120,   70,    70,    70,    71,    91];
+  const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(24,50,72,0.07)';
+  const tickColor = isDark ? '#9ab0c2' : '#7f96aa';
+  const c1 = isDark ? '#7F77DD' : '#534AB7';
+  const c2 = isDark ? '#1D9E75' : '#0F6E56';
+  const c3 = isDark ? '#EF9F27' : '#BA7517';
+  if (lineInstance) lineInstance.destroy();
+  lineInstance = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: anos,
+      datasets: [
+        { label:'Total',      data:total, borderColor:c1, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c1, borderWidth:2, tension:.3 },
+        { label:'Brasileira', data:brArr, borderColor:c2, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c2, borderWidth:1.5, tension:.3 },
+        { label:'Estrangeira',data:exArr, borderColor:c3, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c3, borderWidth:1.5, borderDash:[4,3], tension:.3 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx=>`${ctx.dataset.label}: ${ctx.parsed.y}` } } },
+      scales:{
+        x:{ grid:{color:gridColor}, ticks:{color:tickColor, font:{size:11}, maxRotation:45, autoSkip:false} },
+        y:{ grid:{color:gridColor}, ticks:{color:tickColor, font:{size:11}}, min:0, max:560 }
+      }
+    }
+  });
 }
 
 function renderOportunidades(data) {
@@ -388,8 +540,7 @@ function renderOportunidades(data) {
         <div class="opp-val">${t.total ?? '—'}</div>
         <div class="opp-note">${o.note}</div>
         <span class="opp-pill" style="background:${o.pillBg};color:${o.pillColor}">${o.pill}</span>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
@@ -398,19 +549,26 @@ async function init() {
     const data = await loadData();
     document.getElementById('loading').style.display  = 'none';
     document.getElementById('dashboard').style.display = 'block';
-
-    document.getElementById('periodo-badge').textContent =
-      data.periodo || 'Período não identificado';
+    document.getElementById('periodo-badge').textContent = data.periodo || '—';
     document.getElementById('footer-updated').textContent =
-      `Atualizado em: ${new Date(data.extracted).toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}`;
-
+      `Atualizado: ${new Date(data.extracted).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}`;
     renderMetrics(data);
     renderBandeira(data);
     renderDonut(data);
-    renderHBarsTipos(data);
+    renderTipos(data);
     renderEmpresas(data);
+    renderHistorico();
     renderOportunidades(data);
 
+    // Re-renderiza gráficos ao trocar tema (cores mudam)
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      setTimeout(() => {
+        renderDonut(data);
+        renderTipos(data);
+        renderEmpresas(data);
+        renderHistorico();
+      }, 50);
+    });
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('error').style.display   = 'block';
