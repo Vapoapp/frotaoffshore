@@ -326,7 +326,7 @@
 
     <div class="panel">
       <div class="panel-title">Evolução histórica da frota (1997–2026)</div>
-      <div class="panel-insight">A frota ainda não recuperou o pico de 2014. A retomada é puxada pela bandeira brasileira — a estrangeira opera em mínima histórica.</div>
+      <div class="panel-insight">A frota ainda não recuperou o pico de 2014. A bandeira estrangeira chegou à mínima histórica de 32 embarcações em 2021, e está em recuperação — chegando a 91 em fev/2026.</div>
       <div class="line-legend">
         <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--purple)"></div>Frota total</div>
         <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--teal)"></div>Bandeira brasileira</div>
@@ -498,10 +498,10 @@ function renderEmpresas(data) {
 let lineInstance = null;
 function renderHistorico() {
   const isDark = document.body.classList.contains('dark');
-  const anos  = ['1997','2000','2004','2007','2010','2012','2014','2016','2018','2020','2022','2024','Fev/26'];
-  const total = [137,  155,   205,   280,   400,   460,   500,   380,   360,   400,   430,   453,   481];
-  const brArr = [32,   65,    90,    112,   200,   243,   257,   260,   290,   330,   360,   382,   390];
-  const exArr = [105,  90,    115,   168,   200,   217,   243,   120,   70,    70,    70,    71,    91];
+  const anos  = ['1997','2000','2004','2007','2010','2012','2014','2016','2018','2020','2021','2022','2024','Fev/26'];
+  const total = [137,  155,   205,   280,   400,   460,   500,   386,   360,   374,   393,   415,   453,   481];
+  const brArr = [32,   65,    90,    112,   200,   243,   257,   311,   300,   336,   361,   376,   382,   390];
+  const exArr = [105,  90,    115,   168,   200,   217,   243,   75,    60,    38,    32,    39,    71,    91];
   const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(24,50,72,0.07)';
   const tickColor = isDark ? '#9ab0c2' : '#7f96aa';
   const c1 = isDark ? '#7F77DD' : '#534AB7';

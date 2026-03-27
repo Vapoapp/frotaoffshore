@@ -1,41 +1,191 @@
-
 {
   "source": "ABEAM / Syndarma",
-  "extracted": "2026-02-15T10:00:00",
+  "extracted": "2026-03-27T16:38:54.584648",
   "periodo": "Fevereiro 2026",
   "totais": {
     "total": 481,
     "brasileira": 390,
-    "estrangeira": 91,
-    "pct_brasileira": 81
+    "pct_brasileira": 81,
+    "estrangeira": 91
   },
   "por_tipo": [
-    {"tipo": "PSV / OSRV",  "total": 203, "brasileira": 181, "estrangeira": 22, "pct": 42.2},
-    {"tipo": "AHTS",        "total":  70, "brasileira":  60, "estrangeira": 10, "pct": 14.6},
-    {"tipo": "LH / SV",     "total":  63, "brasileira":  63, "estrangeira":  0, "pct": 13.1},
-    {"tipo": "RSV",         "total":  35, "brasileira":  33, "estrangeira":  2, "pct":  7.3},
-    {"tipo": "CSV/MPSV",    "total":  23, "brasileira":  16, "estrangeira":  7, "pct":  4.8},
-    {"tipo": "PLSV",        "total":  23, "brasileira":  18, "estrangeira":  5, "pct":  4.8},
-    {"tipo": "CREW / FSV",  "total":  22, "brasileira":   1, "estrangeira": 21, "pct":  4.6},
-    {"tipo": "FLOTEL/CSOV", "total":  14, "brasileira":   1, "estrangeira": 13, "pct":  2.9},
-    {"tipo": "SDSV",        "total":  11, "brasileira":  11, "estrangeira":  0, "pct":  2.3},
-    {"tipo": "RV",          "total":   6, "brasileira":   4, "estrangeira":  2, "pct":  1.2},
-    {"tipo": "WSV",         "total":   5, "brasileira":   4, "estrangeira":  1, "pct":  1.0},
-    {"tipo": "HLV",         "total":   2, "brasileira":   0, "estrangeira":  2, "pct":  0.4},
-    {"tipo": "DLV",         "total":   2, "brasileira":   2, "estrangeira":  0, "pct":  0.4},
-    {"tipo": "OTSV",        "total":   1, "brasileira":   1, "estrangeira":  0, "pct":  0.2},
-    {"tipo": "DSV",         "total":   1, "brasileira":   1, "estrangeira":  0, "pct":  0.2}
+    {
+      "tipo": "PSV / OSRV",
+      "total": 203,
+      "brasileira": 181,
+      "estrangeira": 22,
+      "pct": 42.2
+    },
+    {
+      "tipo": "AHTS",
+      "total": 70,
+      "brasileira": 60,
+      "estrangeira": 10,
+      "pct": 14.6
+    },
+    {
+      "tipo": "LH / SV",
+      "total": 63,
+      "brasileira": 63,
+      "estrangeira": 0,
+      "pct": 13.1
+    },
+    {
+      "tipo": "RSV",
+      "total": 35,
+      "brasileira": 33,
+      "estrangeira": 2,
+      "pct": 7.3
+    },
+    {
+      "tipo": "CSV/MPSV",
+      "total": 23,
+      "brasileira": 7,
+      "estrangeira": 16,
+      "pct": 4.8
+    },
+    {
+      "tipo": "PLSV",
+      "total": 23,
+      "brasileira": 5,
+      "estrangeira": 18,
+      "pct": 4.8
+    },
+    {
+      "tipo": "CREW / FSV",
+      "total": 22,
+      "brasileira": 21,
+      "estrangeira": 1,
+      "pct": 4.6
+    },
+    {
+      "tipo": "FLOTEL/CSOV",
+      "total": 14,
+      "brasileira": 1,
+      "estrangeira": 13,
+      "pct": 2.9
+    },
+    {
+      "tipo": "SDSV",
+      "total": 11,
+      "brasileira": 11,
+      "estrangeira": 0,
+      "pct": 2.3
+    },
+    {
+      "tipo": "RV",
+      "total": 6,
+      "brasileira": 2,
+      "estrangeira": 4,
+      "pct": 1.2
+    },
+    {
+      "tipo": "WSV",
+      "total": 5,
+      "brasileira": 4,
+      "estrangeira": 1,
+      "pct": 1.0
+    },
+    {
+      "tipo": "HLV",
+      "total": 2,
+      "brasileira": 0,
+      "estrangeira": 2,
+      "pct": 0.4
+    },
+    {
+      "tipo": "DLV",
+      "total": 2,
+      "brasileira": 0,
+      "estrangeira": 2,
+      "pct": 0.4
+    },
+    {
+      "tipo": "OTSV",
+      "total": 1,
+      "brasileira": 1,
+      "estrangeira": 0,
+      "pct": 0.2
+    },
+    {
+      "tipo": "DSV",
+      "total": 1,
+      "brasileira": 1,
+      "estrangeira": 0,
+      "pct": 0.2
+    }
   ],
   "top_empresas": [
-    {"empresa": "Bram Offshore", "total": 78, "brasileira": 67, "estrangeira": 11},
-    {"empresa": "CBO",           "total": 45, "brasileira": 45, "estrangeira":  0},
-    {"empresa": "Oceanpact",     "total": 28, "brasileira": 26, "estrangeira":  2},
-    {"empresa": "Starnav",       "total": 28, "brasileira": 27, "estrangeira":  1},
-    {"empresa": "DOF / Norskan", "total": 27, "brasileira": 21, "estrangeira":  6},
-    {"empresa": "Tranship",      "total": 27, "brasileira": 26, "estrangeira":  1},
-    {"empresa": "WSUT",          "total": 23, "brasileira": 22, "estrangeira":  1},
-    {"empresa": "Camorim",       "total": 18, "brasileira": 18, "estrangeira":  0},
-    {"empresa": "Oceânica",      "total": 18, "brasileira": 15, "estrangeira":  3},
-    {"empresa": "Baru",          "total": 15, "brasileira": 14, "estrangeira":  1}
-  ]
+    {
+      "empresa": "Bram Offshore",
+      "status": "ABEAM",
+      "brasileira": 67,
+      "estrangeira": 11,
+      "total": 78
+    },
+    {
+      "empresa": "CBO",
+      "status": "ABEAM",
+      "brasileira": 45,
+      "estrangeira": 0,
+      "total": 45
+    },
+    {
+      "empresa": "Oceanpact",
+      "status": "ABEAM",
+      "brasileira": 26,
+      "estrangeira": 2,
+      "total": 28
+    },
+    {
+      "empresa": "Starnav",
+      "status": "ABEAM",
+      "brasileira": 27,
+      "estrangeira": 1,
+      "total": 28
+    },
+    {
+      "empresa": "DOF / Norskan",
+      "status": "ABEAM",
+      "brasileira": 21,
+      "estrangeira": 6,
+      "total": 27
+    },
+    {
+      "empresa": "Tranship",
+      "status": "ABEAM",
+      "brasileira": 26,
+      "estrangeira": 1,
+      "total": 27
+    },
+    {
+      "empresa": "WSUT",
+      "status": "ABEAM",
+      "brasileira": 22,
+      "estrangeira": 1,
+      "total": 23
+    },
+    {
+      "empresa": "Camorim",
+      "status": "ABEAM",
+      "brasileira": 18,
+      "estrangeira": 0,
+      "total": 18
+    },
+    {
+      "empresa": "Oceânica",
+      "status": "ABEAM",
+      "brasileira": 15,
+      "estrangeira": 3,
+      "total": 18
+    },
+    {
+      "empresa": "Baru",
+      "status": "Não Associado",
+      "brasileira": 14,
+      "estrangeira": 1,
+      "total": 15
+    }
+  ],
+  "empresas_total": 47
 }
