@@ -56,14 +56,18 @@ jobs:
             data/last_processed.json
           retention-days: 90
 
-      - name: Deploy do JSON no GitHub Pages
+      - name: Preparar pasta public para deploy
+        run: |
+          cp index.html public/index.html
+          mkdir -p public/data
+
+      - name: Deploy no GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          destination_dir: data
-          keep_files: true
+          keep_files: false
 
       - name: Exibir resumo no log
         if: always()
