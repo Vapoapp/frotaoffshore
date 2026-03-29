@@ -415,8 +415,6 @@ function renderMetrics(data) {
 function renderBandeira(data) {
   const { totais } = data;
   const pctBR = totais.pct_brasileira, pctEX = 100 - pctBR;
-  document.getElementById('bandeira-insight').textContent =
-    'O Brasil reduziu embarcações estrangeiras em ~70% desde 2015 — resultado direto da Lei 9.432/97.';
   document.getElementById('flag-track').innerHTML = `
     <div class="flag-seg" style="width:${pctBR}%;background:#0F6E56;color:#d1fae5">${pctBR}%</div>
     <div class="flag-seg" style="width:${pctEX}%;background:#BA7517;color:#fef3c7">${pctEX}%</div>
@@ -454,7 +452,7 @@ function renderTipos(data) {
   const max = data.por_tipo[0].total;
   const colors = getColors();
   document.getElementById('tipos-insight').textContent =
-    `${data.por_tipo[0].tipo} representa ${data.por_tipo[0].pct}% da frota — mercado denso. PLSV e CSV são escassos e de alto valor.`;
+    `${data.por_tipo[0].tipo} representa ${data.por_tipo[0].pct}% da frota.`;
   document.getElementById('hbars-tipos').innerHTML = data.por_tipo.map((item, i) => {
     const pct = Math.round((item.total / max) * 100);
     return `
