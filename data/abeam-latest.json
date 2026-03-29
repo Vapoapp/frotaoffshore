@@ -1,6 +1,6 @@
 {
   "source": "ABEAM / Syndarma",
-  "extracted": "2026-03-29T19:41:25.950555",
+  "extracted": "2026-03-29T19:59:41.171484",
   "periodo": "Fevereiro 2026",
   "totais": {
     "total": 481,
@@ -117,8 +117,8 @@
   ],
   "top_empresas": [
     {
-      "empresa": "Bram Offshore",
-      "status": "ABEAM",
+      "empresa": "Bram",
+      "status": "OFFSHORE ABEAM",
       "brasileira": 67,
       "estrangeira": 11,
       "total": 78
@@ -145,8 +145,8 @@
       "total": 28
     },
     {
-      "empresa": "DOF / Norskan",
-      "status": "ABEAM",
+      "empresa": "Dof /",
+      "status": "NORSKAN ABEAM",
       "brasileira": 21,
       "estrangeira": 6,
       "total": 27
@@ -187,5 +187,70 @@
       "total": 15
     }
   ],
-  "empresas_total": 47
+  "empresas_total": 47,
+  "historico": [
+    {
+      "periodo": "1985",
+      "label": "1985",
+      "ano": 1985,
+      "mes": 1,
+      "total": 108,
+      "brasileira": 13,
+      "estrangeira": 95
+    },
+    {
+      "periodo": "1997",
+      "label": "1997",
+      "ano": 1997,
+      "mes": 1,
+      "total": 137,
+      "brasileira": 32,
+      "estrangeira": 105
+    },
+    {
+      "periodo": "2004",
+      "label": "2004",
+      "ano": 2004,
+      "mes": 1,
+      "total": 155,
+      "brasileira": 65,
+      "estrangeira": 90
+    },
+    {
+      "periodo": "2007",
+      "label": "2007",
+      "ano": 2007,
+      "mes": 1,
+      "total": 205,
+      "brasileira": 112,
+      "estrangeira": 93
+    },
+    {
+      "periodo": "2014",
+      "label": "2014",
+      "ano": 2014,
+      "mes": 1,
+      "total": 500,
+      "brasileira": 243,
+      "estrangeira": 257
+    },
+    {
+      "periodo": "2024",
+      "label": "2024",
+      "ano": 2024,
+      "mes": 1,
+      "total": 453,
+      "brasileira": 382,
+      "estrangeira": 71
+    },
+    {
+      "periodo": "Fevereiro 2026",
+      "label": "Fev/26",
+      "ano": 2026,
+      "mes": 2,
+      "total": 481,
+      "brasileira": 390,
+      "estrangeira": 91
+    }
+  ]
 }
