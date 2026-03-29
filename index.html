@@ -326,7 +326,7 @@
 
     <div class="panel">
       <div class="panel-title">Evolução histórica da frota (1997–2026)</div>
-      <div class="panel-insight">A frota ainda não recuperou o pico de 2014. A bandeira estrangeira chegou à mínima histórica de 32 embarcações em 2021, e está em recuperação — chegando a 91 em fev/2026.</div>
+      <div class="panel-insight">A frota ainda não recuperou o pico de 2014. O gráfico usa somente os pontos oficiais informados no relatório histórico e no dado mais recente disponível.</div>
       <div class="line-legend">
         <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--purple)"></div>Frota total</div>
         <div class="line-leg-item"><div class="line-leg-bar" style="background:var(--teal)"></div>Bandeira brasileira</div>
@@ -496,12 +496,27 @@ function renderEmpresas(data) {
 }
 
 let lineInstance = null;
-function renderHistorico() {
+function renderHistorico(data) {
   const isDark = document.body.classList.contains('dark');
-  const anos  = ['1997','2000','2004','2007','2010','2012','2014','2016','2018','2020','2021','2022','2024','Fev/26'];
-  const total = [137,  155,   205,   280,   400,   460,   500,   386,   360,   374,   393,   415,   453,   481];
-  const brArr = [32,   65,    90,    112,   200,   243,   257,   311,   300,   336,   361,   376,   382,   390];
-  const exArr = [105,  90,    115,   168,   200,   217,   243,   75,    60,    38,    32,    39,    71,    91];
+  const historico = Array.isArray(data?.historico) && data.historico.length
+    ? data.historico
+    : [
+        { label:'1985', total:108, brasileira:13, estrangeira:95 },
+        { label:'1997', total:137, brasileira:32, estrangeira:105 },
+        { label:'2004', total:155, brasileira:65, estrangeira:90 },
+        { label:'2007', total:205, brasileira:112, estrangeira:93 },
+        { label:'2014', total:500, brasileira:243, estrangeira:257 },
+        { label:'2024', total:453, brasileira:382, estrangeira:71 },
+        { label:'Fev/26', total:481, brasileira:390, estrangeira:91 },
+      ];
+
+  const anos = historico.map(item => item.label || item.periodo || `${item.ano}`);
+  const total = historico.map(item => item.total);
+  const brArr = historico.map(item => item.brasileira);
+  const exArr = historico.map(item => item.estrangeira);
+  const maxY = Math.max(...total, 0);
+  const yTop = Math.ceil((maxY + 30) / 50) * 50;
+
   const gridColor = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(24,50,72,0.07)';
   const tickColor = isDark ? '#9ab0c2' : '#7f96aa';
   const c1 = isDark ? '#7F77DD' : '#534AB7';
@@ -513,9 +528,9 @@ function renderHistorico() {
     data: {
       labels: anos,
       datasets: [
-        { label:'Total',      data:total, borderColor:c1, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c1, borderWidth:2, tension:.3 },
+        { label:'Total', data:total, borderColor:c1, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c1, borderWidth:2, tension:.3 },
         { label:'Brasileira', data:brArr, borderColor:c2, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c2, borderWidth:1.5, tension:.3 },
-        { label:'Estrangeira',data:exArr, borderColor:c3, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c3, borderWidth:1.5, borderDash:[4,3], tension:.3 },
+        { label:'Estrangeira', data:exArr, borderColor:c3, backgroundColor:'transparent', pointRadius:3, pointBackgroundColor:c3, borderWidth:1.5, borderDash:[4,3], tension:.3 },
       ]
     },
     options: {
@@ -523,7 +538,7 @@ function renderHistorico() {
       plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx=>`${ctx.dataset.label}: ${ctx.parsed.y}` } } },
       scales:{
         x:{ grid:{color:gridColor}, ticks:{color:tickColor, font:{size:11}, maxRotation:45, autoSkip:false} },
-        y:{ grid:{color:gridColor}, ticks:{color:tickColor, font:{size:11}}, min:0, max:560 }
+        y:{ grid:{color:gridColor}, ticks:{color:tickColor, font:{size:11}}, min:0, max:yTop }
       }
     }
   });
@@ -557,7 +572,7 @@ async function init() {
     renderDonut(data);
     renderTipos(data);
     renderEmpresas(data);
-    renderHistorico();
+    renderHistorico(data);
     renderOportunidades(data);
 
     // Re-renderiza gráficos ao trocar tema (cores mudam)
@@ -566,7 +581,7 @@ async function init() {
         renderDonut(data);
         renderTipos(data);
         renderEmpresas(data);
-        renderHistorico();
+        renderHistorico(data);
       }, 50);
     });
   } catch(e) {
