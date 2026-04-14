@@ -1,6 +1,6 @@
 {
   "source": "ABEAM / Syndarma",
-  "extracted": "2026-04-13T11:59:02.969384",
+  "extracted": "2026-03-27T16:25:39.026694",
   "periodo": "Fevereiro 2026",
   "totais": {
     "total": 481,
@@ -117,8 +117,8 @@
   ],
   "top_empresas": [
     {
-      "empresa": "Bram",
-      "status": "OFFSHORE ABEAM",
+      "empresa": "Bram Offshore",
+      "status": "ABEAM",
       "brasileira": 67,
       "estrangeira": 11,
       "total": 78
@@ -145,8 +145,8 @@
       "total": 28
     },
     {
-      "empresa": "Dof /",
-      "status": "NORSKAN ABEAM",
+      "empresa": "DOF / Norskan",
+      "status": "ABEAM",
       "brasileira": 21,
       "estrangeira": 6,
       "total": 27
